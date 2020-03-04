@@ -60,9 +60,11 @@ class SignupState extends State<Signup> with SingleTickerProviderStateMixin{
                             controller: controller,
                             children: <Widget> [
                               Container(
+                                // LAVORATORE
                                 child: SezioneNuova(true),
                               ),
-                              SingleChildScrollView(
+                              Container(
+                                // DATORE
                                 child: SezioneNuova(false),
                               )
                             ]

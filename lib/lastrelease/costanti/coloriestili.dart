@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 final baseurl = "http://87.27.62.247/";  //Cambiare l'url base, il server è diverso
+final VALORE_DI_CONTROLLO = "comunqueandra2020";
+final headers = {"Content-Type": "application/json"};
 
 final String DATORE = "DATORE";
 final String LAVORATORE = "LAVORATORE";
@@ -19,6 +21,10 @@ final String fontfamily = "Montserrat";
 
 final TextStyle testosemplice12 = TextStyle(color: Color(0xFFA0A0A0),
     fontSize: 12,
+    fontWeight: FontWeight.w700);
+
+final TextStyle testosemplice14 = TextStyle(color: Color(0xFFA0A0A0),
+    fontSize: 14,
     fontWeight: FontWeight.w700);
 
 final TextStyle testosemplice16 = TextStyle(color: Color(0xFFA0A0A0),
@@ -60,4 +66,16 @@ const List<Color> signInGradients = [
   Color(0xFF03A0FE),
   Color(0xFF0EDED2),
   Color(0xFF03A0FE),
+];
+
+const List<Color> buttongradiant = [
+  Color(0xFF03A0FE),
+  Color(0xFF03A0FE),
+];
+
+const List<Color> errorgradient = [
+  Colors.redAccent,
+  Colors.redAccent,
+  Colors.redAccent,
+  Color.fromRGBO(254, 167, 10, 1)
 ];

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:win/lastrelease/costanti/coloriestili.dart';
 
 class InputWidget extends StatelessWidget {
   final double topRight;
@@ -36,7 +37,7 @@ class InputWidget extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext1,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle: testosemplice14),
                     ),
                   ),
                 ),
@@ -61,7 +62,8 @@ class InputWidget extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext2,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle: testosemplice14,
+                      )
                     ),
                   ),
                 ),
@@ -103,7 +105,8 @@ class InputWidgetSingolo extends StatelessWidget {
             decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hinttext,
-                hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                hintStyle: testosemplice14
+            ),
           ),
         ),
       ),
@@ -152,7 +155,8 @@ class InputWidgetRight extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext1,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle:testosemplice14
+                      ),
                     ),
                   ),
                 ),
@@ -178,7 +182,8 @@ class InputWidgetRight extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext2,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle: testosemplice14
+                      ),
                     ),
                   ),
                 ),
@@ -232,7 +237,8 @@ class InputWidgetLeft extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext1,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle: testosemplice14
+                      ),
                     ),
                   ),
                 ),
@@ -270,7 +276,8 @@ class InputWidgetLeft extends StatelessWidget {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: hinttext2,
-                                hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                                hintStyle: testosemplice14
+                            ),
                           ),
                         )
                     )
@@ -282,7 +289,8 @@ class InputWidgetLeft extends StatelessWidget {
                       decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: hinttext2,
-                          hintStyle: TextStyle(color: Color(0xFFE1E1E1), fontSize: 14, fontWeight: FontWeight.w900)),
+                          hintStyle: testosemplice14
+                      ),
                     ),
 
 
