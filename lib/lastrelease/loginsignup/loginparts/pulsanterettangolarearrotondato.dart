@@ -41,7 +41,7 @@ class PulsanteRettangolareArrotondato extends StatelessWidget {
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.w500)),
+                        fontWeight: FontWeight.w700)),
                 padding: EdgeInsets.only(top: 16, bottom: 16),
               ),
               Visibility(

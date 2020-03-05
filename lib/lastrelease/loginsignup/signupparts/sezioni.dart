@@ -2,9 +2,11 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
+import 'package:win/lastrelease/loginsignup/recuperapassword.dart';
 import 'package:win/lastrelease/model/lavoratore.dart';
 import 'package:win/lastrelease/services/iscrizioni.dart';
 
@@ -20,10 +22,26 @@ class SezioneNuova extends StatelessWidget{
   TextEditingController datanascitacontroller = new TextEditingController();
   bool cercooffro;  // TRUE = CERCO, FALSE = OFFRO
 
+
+  ProgressDialog pr;
+
   SezioneNuova(this.cercooffro);
 
   @override
   Widget build(BuildContext context) {
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+    pr.style(
+        message: 'Stai entrando in W1N',
+        borderRadius: 10.0,
+        backgroundColor: Colors.white,
+        progressWidget: CircularProgressIndicator(),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w700)
+    );
     return
      SingleChildScrollView(
 
@@ -120,19 +138,24 @@ class SezioneNuova extends StatelessWidget{
 
   Future registraticomelavoratore(context) async {
 
+    await mostraprogressdialog(context);
+
     DateTime data = dateFormat.parse(datanascitacontroller.text);
 
     Lavoratore daiscrivere = new Lavoratore(email: emailcontroller.text,password:
     passwordcontroller.text, nome: nomereferentecontroller.text,
         cognome: cognomereferentecontroller.text, datanascita:data ,
-        numerotelefono: numerotelefonocontroller.text);
+        numeroditelefono: numerotelefonocontroller.text);
 
-    Lavoratore iscritto = await iscrviticomelavoratore(daiscrivere, mostraerrore(context));
+    Lavoratore iscritto = await iscrviticomelavoratore(daiscrivere);
 
     if(iscritto == null){
       // Qui andrebbe lanciato un errore, vediamo come
+      await nascondiprogressdialog();
+      mostraerrore(context);
     }else{
       // Iscrizione andata a BUON FINE
+      await nascondiprogressdialog();
       print(iscritto.toJson());
     }
 
@@ -147,10 +170,24 @@ class SezioneNuova extends StatelessWidget{
       duration: Duration(seconds: 5),
       backgroundGradient: LinearGradient(colors: errorgradient,),
       backgroundColor: Colors.red,
-      mainButton: FlatButton(onPressed: (){}, child: Text("Recupera account",  style: stiletestoappbar),),
+      mainButton: FlatButton(onPressed: (){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (c)=> PasswordDimenticata(emailcorrente: emailcontroller.text,)));
+        },
+        child: Text("Recupera account",  style: stiletestoappbar),),
       boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
     )..show(context);
   }
+
+
+  mostraprogressdialog(context)async {
+    await pr.show();
+  }
+
+
+  nascondiprogressdialog()async{
+    await pr.hide();
+  }
+
 
 
 

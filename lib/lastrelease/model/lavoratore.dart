@@ -18,7 +18,6 @@ class Lavoratore {
   String nome;
   String cognome;
   String ruolo;
-  String numerotelefono;
   String passwordinchiaro;
   DateTime datanascita;
   String immagineprofilo;
@@ -31,7 +30,7 @@ class Lavoratore {
 
   Lavoratore({this.email,this.password,this.nome,this.cognome,this.ruolo,this.datanascita,
     this.immagineprofilo, this.listaskill,
-    this.numerotelefono, this.passwordinchiaro, this.status, this.descrizione});
+    this.numeroditelefono, this.passwordinchiaro, this.status, this.descrizione});
 
   factory Lavoratore.fromJson(Map<String, dynamic> json) => _$LavoratoreFromJson(json);
 

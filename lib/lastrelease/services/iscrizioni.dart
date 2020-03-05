@@ -9,7 +9,7 @@ final String secondbaseurlsecure = "secure/utenti";
 
 
 
-Future<Lavoratore> iscrviticomelavoratore(Lavoratore lavoratore,Function onerror) async {
+Future<Lavoratore> iscrviticomelavoratore(Lavoratore lavoratore) async {
   String urlcompleto = baseurl + secondbaseurl + "iscrizione/lavoratore/" + VALORE_DI_CONTROLLO;
   final response = await http.post(urlcompleto,body: jsonEncode(lavoratore.toJson()), headers: headers);
   if(response.statusCode == 200) {
@@ -18,12 +18,18 @@ Future<Lavoratore> iscrviticomelavoratore(Lavoratore lavoratore,Function onerror
   }
   print("STATUS CODE");
   print(response.statusCode);
-  if(response.statusCode == 500){
-     onerror();
-  }
   print("BODY");
   print(response.body);
   print("HEADERS");
   print(response.headers);
   return null;
+}
+
+Future<String> passworddimenticata(email) async {
+  String urlcompleto = baseurl + secondbaseurl + "passworddimenticata/" + VALORE_DI_CONTROLLO;
+  final response = await http.post(urlcompleto,body: email, headers: headers);
+  if(response.statusCode == 200){
+    return response.body;
+  }
+  print(response.body);
 }

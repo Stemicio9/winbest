@@ -8,6 +8,7 @@ import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/background.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
+import 'package:win/lastrelease/loginsignup/recuperapassword.dart';
 
 
 
@@ -176,7 +177,8 @@ class LoginState extends State<Login>{
         child: GestureDetector(
             onTap: (){
              // Navigator.of(context).push(MaterialPageRoute(builder: (c) => PasswordDimenticata(emailcorrente: emailcontroller.text,)));
-
+        //      recuperapassword
+              Navigator.push(context, MaterialPageRoute(builder: (c)=>PasswordDimenticata(emailcorrente: emailcontroller.text,)));
             },
             child: Text("Password dimenticata?",
                 style: testosemplice16sottolineato)
