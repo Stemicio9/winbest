@@ -2,8 +2,11 @@
 
 
 
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/background.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
@@ -26,11 +29,26 @@ class LoginState extends State<Login>{
   TextEditingController emailcontroller = new TextEditingController();
   TextEditingController passwordcontroller = new TextEditingController();
 
-
+  ProgressDialog pr;
 
   @override
   Widget build(BuildContext context) {
-  //  SystemChrome.setEnabledSystemUIOverlays ([]);
+
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+    pr.style(
+        message: 'Benvenuto in W1N',
+        borderRadius: 10.0,
+        backgroundColor: Colors.white,
+        progressWidget: CircularProgressIndicator(),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w700)
+    );
+
+
     SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -135,7 +153,7 @@ class LoginState extends State<Login>{
                     ),
 
                     GestureDetector(
-                      onTap: risultatologin,
+                      onTap: (){risultatologin(context);},
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: ShapeDecoration(
@@ -224,7 +242,52 @@ class LoginState extends State<Login>{
   }
 
 
-  risultatologin(){}
+  risultatologin(context)async{
+    await mostraprogressdialog();
+    bool result = false;
+    try {
+          result = await Auth.instance.entra(
+          emailcontroller.text, passwordcontroller.text);
+    }catch (e){
+
+    }
+    if(!result){
+      await nascondiprogressdialog();
+      mostraerrore(context);
+    }else{
+      await nascondiprogressdialog();
+      Auth.instance.aggiornaprofilo();
+      Navigator.of(context).pushNamed("/dashboard");
+    }
+  }
+
+
+  mostraerrore(context){
+    Flushbar(
+      title: "Impossibile accedere",
+      message: "Credenziali errate",
+      duration: Duration(seconds: 3),
+      backgroundGradient: LinearGradient(colors: errorgradient,),
+      backgroundColor: Colors.red,
+      boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
+    )..show(context);
+  }
+
+  mostraprogressdialog()async {
+    await pr.show();
+  }
+
+
+  nascondiprogressdialog()async{
+    await pr.hide();
+  }
+
+
+  @override
+  void dispose() {
+    pr.dismiss();
+    super.dispose();
+  }
 
 
 }

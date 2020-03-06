@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:win/lastrelease/dashboard/dashboard.dart';
 import 'package:win/lastrelease/loginsignup/login.dart';
 import 'package:win/lastrelease/loginsignup/recuperapassword.dart';
 import 'package:win/lastrelease/loginsignup/signup.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => Login(),
         '/signup': (context) => Signup(),
+        '/dashboard': (context) => Dashboard()
       },
     );
   }

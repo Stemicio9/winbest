@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:progress_dialog/progress_dialog.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
@@ -26,6 +27,8 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
 
   String risposta;
 
+  ProgressDialog pr;
+
   @override
   void initState() {
     if(this.widget.emailcorrente != null){
@@ -37,6 +40,33 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
   @override
   Widget build(BuildContext context) {
 
+
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+    pr.style(
+        message: 'Ti stiamo inviando la nuova password',
+        borderRadius: 10.0,
+        backgroundColor: Colors.white,
+        progressWidget: CircularProgressIndicator(),
+        elevation: 10.0,
+        insetAnimCurve: Curves.easeInOut,
+        progressTextStyle: TextStyle(
+            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
+        messageTextStyle: TextStyle(
+            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w700)
+    );
+
+    return GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child:
+        corpopagina()
+    );
+
+  }
+
+  Widget corpopagina(){
     return Scaffold(
       appBar: appbarcomune("Recupera password"),
       body: Column(
@@ -58,7 +88,7 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
           ),
           Align(
             alignment: Alignment.centerLeft,
-          child: InputWidgetSingolo(30,0,"esempio@email.it",mailcontroller),
+            child: InputWidgetSingolo(30,0,"esempio@email.it",mailcontroller),
           ),
           Padding(
             padding: EdgeInsets.only(bottom: 25),
@@ -67,12 +97,12 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
 
           risposta != null ?
           Center(
-          child: Text(risposta,
-              textAlign: TextAlign.center,
-              style:
-              TextStyle(fontSize: 16,
-              color: Color(0xFF999A9A),
-              fontWeight: FontWeight.w700))
+              child: Text(risposta,
+                  textAlign: TextAlign.center,
+                  style:
+                  TextStyle(fontSize: 16,
+                      color: Color(0xFF999A9A),
+                      fontWeight: FontWeight.w700))
           )
               : Container(),
 
@@ -129,10 +159,22 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
     setState(() {
       risposta = result;
     }); */
+     await mostraprogressdialog();
      String result = await passworddimenticata(mailcontroller.text);
+     await nascondiprogressdialog();
      setState(() {
        risposta = result;
      });
+  }
+
+
+  mostraprogressdialog()async {
+    await pr.show();
+  }
+
+
+  nascondiprogressdialog()async{
+    await pr.hide();
   }
 
 }
