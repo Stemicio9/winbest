@@ -16,6 +16,10 @@ final Color rosso = Colors.redAccent;
 final Color verde = Color(0xFF2FE000);
 final Color calltoactionlogin = Color.fromRGBO(254, 167, 10, 1);
 
+
+var color1 = Color(0xFFa572c0);
+var color2 = Color(0xFF6559d4);
+
 final String fontfamily = "Montserrat";
 
 
@@ -58,6 +62,13 @@ List<Color> wingradient = [
   Color(0xFF0EDED2),
   Color(0xFF03A0FE),
   Color(0xFF0EDED2),
+  Color(0xFF03A0FE),
+];
+
+List<Color> wingradients4 = [
+  Color(0xFF03A0FE),
+  Color(0xFF0EDED2),
+  Color(0xFF03A0FE),
   Color(0xFF03A0FE),
 ];
 

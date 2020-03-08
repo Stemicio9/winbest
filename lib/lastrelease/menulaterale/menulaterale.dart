@@ -182,7 +182,7 @@ class MenuLaterale extends StatelessWidget {
   }
 
   void logout(context){
-   // loginService.esci(context);
+    Auth.instance.logout(context);
   }
 
 

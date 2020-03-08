@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/dashboardwidgets/bottomnavy.dart';
+import 'package:win/lastrelease/dashboard/profilologged.dart';
 import 'package:win/lastrelease/menulaterale/menulaterale.dart';
 
 class Dashboard extends StatefulWidget{
@@ -24,6 +25,8 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
   int _currentIndex = 0;
   PageController _pageController;
 
+  Profilo profilo = new Profilo();
+
 
   @override
   void initState() {
@@ -36,7 +39,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
     return StreamBuilder(
       stream: Auth.instance.currentauth.stream.asBroadcastStream(),
       builder: (context,snapshot){
-          if (!snapshot.hasData || snapshot.data == null) {
+          if (!snapshot.hasData) {
             return Center(
               child: CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(azzurroscuro),
@@ -67,6 +70,12 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
     return StreamBuilder(
       stream: Auth.instance.currentauth.stream.asBroadcastStream(),
         builder: (context,snapshot){
+
+          if (!snapshot.hasData) {
+            return Container();
+          }
+
+
           if(snapshot.data.data["ruolo"] == "DATORE"){
             return Scaffold(
               drawer: new Drawer(
@@ -75,7 +84,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
               appBar: appbar(),
               body: Container(),
             );
-          }else{
+          }else if(snapshot.data.data["ruolo"] == "LAVORATORE"){
             return Scaffold(
               drawer: new Drawer(
                 child: new MenuLaterale(),
@@ -83,6 +92,18 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
               appBar: appbar(),
               body: bodylavoratore(),
               bottomNavigationBar: bottomnavigationbarlavoratore(),
+            );
+          }else if(snapshot.data.data["ruolo"] == "AMMINISTRATORE"){
+             return Scaffold(
+               body: Container(),
+             );
+          }else{
+            return Scaffold(
+              body: Container(
+                child: Center(
+                  child: Text("IMPOSSIBILE CONNETTERSI AL SERVER"),
+                ),
+              ),
             );
           }
         }
@@ -139,9 +160,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
           Container(
             child: Text("3"),
           ),
-          Container(
-            child: Text("4"),
-          )
+          profilo
    //       esploraAnnunci,
    //       paginaannunci,
    //       notifiche,
@@ -150,6 +169,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
       ),
     );
   }
+
 
 
   bottomnavigationbarlavoratore(){
@@ -191,6 +211,73 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
 
   }
 
+
+
+  bodydatore() {
+    return SizedBox.expand(
+      child: PageView(
+        controller: _pageController,
+
+        onPageChanged: (index) {
+          setState(() => _currentIndex = index);
+        },
+        children: <Widget>[
+          Container(
+            child: Text("1"),
+          ),
+          Container(
+            child: Text("2"),
+          ),
+          Container(
+            child: Text("3"),
+          ),
+          profilo
+     /*     paginaannunci,
+          pubblica,
+          notifiche,
+          profilo, */
+        ],
+      ),
+    );
+  }
+
+
+  bottomnavigationbardatore(){
+    return  BottomNavyBar(
+      selectedIndex: _currentIndex,
+      onItemSelected: (index) {
+
+
+        setState(() {
+          _currentIndex = index;
+        });
+
+        _pageController.jumpToPage(index);
+      },
+      items: <BottomNavyBarItem>[
+        BottomNavyBarItem(
+            title: Text('Annunci'),
+            icon: Icon(Icons.search),
+            activeColor: azzurroscuro
+        ),
+        BottomNavyBarItem(
+            title: Text('Pubblica annunci'),
+            icon: Icon(Icons.publish),
+            activeColor: azzurroscuro
+        ),
+        BottomNavyBarItem(
+            title: Text('Notifiche'),
+            icon: Icon(Icons.notifications),
+            activeColor: azzurroscuro
+        ),
+        BottomNavyBarItem(
+            title: Text('Profilo'),
+            icon: Icon(Icons.person),
+            activeColor: azzurroscuro
+        ),
+      ],
+    );
+  }
 
 }
 

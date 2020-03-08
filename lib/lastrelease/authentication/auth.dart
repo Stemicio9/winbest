@@ -1,14 +1,11 @@
-
-
-
-import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:rxdart/rxdart.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:http/http.dart' as http;
+import 'package:win/lastrelease/model/azienda.dart';
+import 'package:win/placesandmaps.dart';
 
 final String secondbaseurl = "nonsecure/utenti/";
 final String secondbaseurlsecure = "secure/utenti/";
@@ -19,7 +16,11 @@ class Auth {
   Dio dio = new Dio();
 
   var token;
-  final BehaviorSubject<Response> currentauth = BehaviorSubject<Response>();
+  var HERE_token;
+
+
+
+  BehaviorSubject<Response> currentauth = BehaviorSubject<Response>();
 
   Auth._privateConstructor();
 
@@ -39,6 +40,19 @@ class Auth {
       return true;
     }
     return false;
+  }
+  
+  Future<bool> entraInHere()async{
+    final oauthendpoint = Uri.parse("https://account.api.here.com/oauth2/token");
+    final identifier = HERE_ACCESS_KEY_ID;
+    final secret = HERE_ACCESS_KEY_SECRET;
+    var client = await oauth2.clientCredentialsGrant(oauthendpoint, identifier, secret);
+    if(client.credentials.accessToken != null){
+      print("IL TOKEN E' " + client.credentials.accessToken);
+      HERE_token = client.credentials.accessToken;
+      return true;
+    }
+    print("ERRORE");
   }
 
   aggiornaprofilo()async{
@@ -66,6 +80,44 @@ class Auth {
     return Image.network(
         baseurl+secondbaseurlsecure+"immagineprofilo/"+VALORE_DI_CONTROLLO+"?access_token="+token);
   }
+
+
+  void logout(context){
+    token = "";
+    currentauth = new BehaviorSubject<Response>();
+    Navigator.pushNamedAndRemoveUntil(context, "/", (a){return true;});
+  }
+
+  Future<bool> gialoggato() async {
+
+  }
+
+  Future<String> ruoloautenticato()async {
+    var resp = await currentauth.first;
+    return resp.data.data["ruolo"];
+  }
+
+  Future<String> aggiungiazienda(Azienda azienda) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"aggiungiazienda/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    var response = await dio.post(urlcompleto,data: azienda.toJson());
+    if(response.data == "Azienda aggiunta") {
+      aggiornaprofilo();
+      return "OK";
+    }
+    return"ERRORE";
+  }
+
+  Future<String> rimuoviazienda(String azienda) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"rimuoviazienda/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    var response = await dio.post(urlcompleto,data: azienda);
+    if(response.data == "Azienda rimossa") {
+      aggiornaprofilo();
+      return "OK";
+    }
+    return"ERRORE";
+  }
+
+
 
 
 }
