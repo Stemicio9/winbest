@@ -34,13 +34,12 @@ class LoginState extends State<Login>{
   @override
   Widget build(BuildContext context) {
 
-    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
+    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
     pr.style(
-        message: 'Benvenuto in W1N',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
+        borderRadius: 100.0,
+        backgroundColor: azzurroscuro,
         progressWidget: CircularProgressIndicator(),
-        elevation: 10.0,
+        elevation: 20.0,
         insetAnimCurve: Curves.easeInOut,
         progressTextStyle: TextStyle(
             color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),

@@ -55,6 +55,14 @@ class Auth {
     print("ERRORE");
   }
 
+  modificaprofilo(utente)async{
+    print("IL JSON E'");
+    print(utente.toJson());
+    String urlcompleto = baseurl+secondbaseurlsecure+"modifica/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    final response = await dio.post(urlcompleto,data: utente.toJson());
+    currentauth.sink.add(response);
+  }
+
   aggiornaprofilo()async{
     String urlcompleto = baseurl+secondbaseurlsecure+"profilo/"+VALORE_DI_CONTROLLO+"?access_token="+token;
     final response = await dio.get(urlcompleto);
@@ -65,6 +73,12 @@ class Auth {
     String urlcompleto = baseurl+secondbaseurlsecure+"ruolo/"+VALORE_DI_CONTROLLO+"?access_token="+token;
     final response = await http.get(urlcompleto);
     return response.body;
+  }
+
+  Future<String> email() async {
+    var response = await currentauth.first.wrapped;
+    print(response.data);
+    return response.data["email"];
   }
 
   DecorationImage immagineprofiloasdecoration(){
@@ -118,6 +132,25 @@ class Auth {
   }
 
 
+  Future<String> aggiungiskill(String skill) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"aggiungiskill/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    var response = await dio.post(urlcompleto,data: skill);
+    if(response.data == "Skill aggiunta"){
+      aggiornaprofilo();
+      return "OK";
+    }
+    return "ERRORE";
+  }
+
+  Future<String> rimuoviskill(String skill) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"rimuoviskill/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    var response = await dio.post(urlcompleto,data: skill);
+    if(response.data == "Skill rimossa"){
+      aggiornaprofilo();
+      return "OK";
+    }
+    return "ERRORE";
+  }
 
 
 }

@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/datoredilavoro/aggiungiazienda.dart';
+import 'package:win/lastrelease/dashboard/lavoratore/agguingiskill.dart';
+import 'package:win/lastrelease/dashboard/modificautente.dart';
 import 'package:win/lastrelease/model/azienda.dart';
-import 'package:win/lastrelease/model/skill.dart';
 
 class Profilo extends StatefulWidget {
   @override
@@ -69,10 +70,11 @@ class ProfiloState extends State<Profilo>{
 
                UpperSection(),
                SizedBox(height: 18.0,),
-               MiddleSectionLavoratore(),
+               MiddleSectionLavoratore(mostracontextmenuskills),
                // Spacer(),
                SizedBox(height: 18.0,),
                Divider(height: 8.0,),
+               BottomSection(),
              ],
            )
      );
@@ -110,6 +112,34 @@ class ProfiloState extends State<Profilo>{
   }
 
 
+  mostracontextmenuskills() async {
+
+    PopupMenuItem item = new PopupMenuItem(
+        value: 1,
+        child:
+        Container(
+            width: MediaQuery.of(context).size.width*2,
+            child:
+              Center(
+              child: Text("Rimuovi"),
+
+                )
+        )
+    );
+
+    List<PopupMenuItem> items = new List();
+    items.add(item);
+
+
+    var result = await showMenu(context: context,
+        position: RelativeRect.fromLTRB(0, MediaQuery.of(context).size.height, MediaQuery.of(context).size.width, 0.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(30),
+          ),),
+        items: items);
+    return result;
+  }
 
 
 
@@ -351,9 +381,14 @@ class UpperSection extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(),
-                  Icon(
+                  InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(builder: (c) => ModificaUtente()));
+                    },
+                  child: Icon(
                     Icons.edit,
                     color: azzurroscuro,
+                    )
                   ),
                 ],
               ),
@@ -630,9 +665,10 @@ class AbbonamentoSection extends StatelessWidget {
 class MiddleSectionLavoratore extends StatelessWidget {
 
 
+  Function rimuoviskill;
 
 
-  MiddleSectionLavoratore();
+  MiddleSectionLavoratore(this.rimuoviskill);
 
 
   @override
@@ -652,7 +688,7 @@ class MiddleSectionLavoratore extends StatelessWidget {
                   //                color: azzurroscuro.withOpacity(0.2),
                   child: IconButton(
                     onPressed: () {
-                //      Navigator.of(context).push(MaterialPageRoute(builder: (c)=> AggiungiSkill()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (c)=> AggiungiSkill(titolo: "Aggiungi mansione",)));
                     },
                     icon: Icon(Icons.add),
                     color: Color(0xFF2FE000),
@@ -680,15 +716,15 @@ class MiddleSectionLavoratore extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
 
                     itemBuilder: (context, index) {
-
-                      Skill skill = snapshot.data.data["listaskill"][index];
+                      String skill = snapshot.data.data["listaskill"][index]["nomeskill"];
                       return ItemCardLavoratore(
                         Icons.work,
-                        skill.nomeskill,
+                        skill,
+                        rimuoviskill
                       );
                     },
 
-                    itemCount: snapshot.data.data.length,
+                    itemCount: snapshot.data.data["listaskill"].length,
 
                   );
                 }
@@ -708,18 +744,27 @@ class MiddleSectionLavoratore extends StatelessWidget {
 class ItemCardLavoratore extends StatelessWidget {
   final icon;
   final name;
-
+  final Function rimuoviskill;
 
   const ItemCardLavoratore(
 
       this.icon,
-      this.name
+      this.name,
+      this.rimuoviskill
       );
   @override
   Widget build(BuildContext context) {
     return
 
       GestureDetector(
+
+          onTap: () async {
+            var result = await rimuoviskill();
+            if(result == 1){
+              Auth.instance.rimuoviskill(name);
+            }
+          },
+
           child: Padding(
             padding: const EdgeInsets.only(right: 8.0),
             child:

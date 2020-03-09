@@ -40,19 +40,22 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
       stream: Auth.instance.currentauth.stream.asBroadcastStream(),
       builder: (context,snapshot){
           if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(azzurroscuro),
+            return Scaffold(
+              body: Container(
+                child: Center(
+                  child: CircularProgressIndicator()
+                ),
               ),
             );
           }else if(snapshot.data.data["email"] != null && snapshot.data.data["email"] != "") {
             return costruiscicorpocentrale();
           }else {
-            return Center(
-              child:
-              Scaffold(
-              body: Text("Impossibile connettersi al server"),
-              )
+            return Scaffold(
+              body: Container(
+                child: Center(
+                  child: Text("Impossibile connettersi al server" , style: testosemplice16,),
+                ),
+              ),
             );
           }
       }
@@ -72,7 +75,13 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
         builder: (context,snapshot){
 
           if (!snapshot.hasData) {
-            return Container();
+            return Scaffold(
+              body: Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            );
           }
 
 

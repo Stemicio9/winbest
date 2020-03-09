@@ -7,6 +7,7 @@ import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
 import 'package:win/lastrelease/loginsignup/recuperapassword.dart';
+import 'package:win/lastrelease/model/datore.dart';
 import 'package:win/lastrelease/model/lavoratore.dart';
 import 'package:win/lastrelease/services/iscrizioni.dart';
 
@@ -31,12 +32,11 @@ class SezioneNuova extends StatelessWidget{
   Widget build(BuildContext context) {
     pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
     pr.style(
-        message: 'Stai entrando in W1N',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
+        borderRadius: 100.0,
+        backgroundColor: azzurroscuro,
         progressWidget: CircularProgressIndicator(),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
+        elevation: 20.0,
+        insetAnimCurve: Curves.easeInCirc,
         progressTextStyle: TextStyle(
             color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
         messageTextStyle: TextStyle(
@@ -65,7 +65,6 @@ class SezioneNuova extends StatelessWidget{
               Stack(
                 alignment: Alignment.centerLeft,
                 children: <Widget>[
-
                   InputWidgetLeft(30.0, 0.0, "emai@example.com" , "password",TextInputType.text, TextInputType.text,true,false,emailcontroller,passwordcontroller),
                 ],
               ),
@@ -129,7 +128,21 @@ class SezioneNuova extends StatelessWidget{
 
 
   Future registraticomedatore(context) async {
-
+    await mostraprogressdialog(context);
+    DateTime data = dateFormat.parse(datanascitacontroller.text);
+    Datore datore = new Datore(email: emailcontroller.text,password:
+    passwordcontroller.text, nome: nomereferentecontroller.text,
+        cognome: cognomereferentecontroller.text, datanascita:data ,
+        numeroditelefono: numerotelefonocontroller.text);
+    Datore iscritto = await iscriviticomedatore(datore);
+    if(iscritto == null){
+      await nascondiprogressdialog();
+      mostraerrore(context);
+    }else{
+      // Iscrizione andata a BUON FINE
+      await nascondiprogressdialog();
+      Navigator.of(context).pushNamed("/dashboard");
+    }
   }
 
 
@@ -156,7 +169,7 @@ class SezioneNuova extends StatelessWidget{
     }else{
       // Iscrizione andata a BUON FINE
       await nascondiprogressdialog();
-      print(iscritto.toJson());
+      Navigator.of(context).pushNamed("/dashboard");
     }
 
 

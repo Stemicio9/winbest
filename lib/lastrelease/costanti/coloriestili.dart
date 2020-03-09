@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 final baseurl = "http://87.27.62.247/";  //Cambiare l'url base, il server è diverso
 final VALORE_DI_CONTROLLO = "comunqueandra2020";
@@ -90,3 +91,5 @@ const List<Color> errorgradient = [
   Colors.redAccent,
   Color.fromRGBO(254, 167, 10, 1)
 ];
+
+final dateFormat = DateFormat("dd-MM-yyyy");

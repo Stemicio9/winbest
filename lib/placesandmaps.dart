@@ -19,6 +19,13 @@ final String apikey = "pk.eyJ1Ijoic3RlZmFub21pY2VsaSIsImEiOiJjazN1a3ZmN2MwZGh4M2
 
 
 class CercaVia extends StatefulWidget{
+
+
+  bool conappbar;
+
+  CercaVia({this.conappbar});
+
+
   @override
   CercaViaState createState() {
     return CercaViaState();
@@ -61,7 +68,7 @@ class CercaViaState extends State<CercaVia>{
     return
 
       Scaffold(
-        appBar: appbarcomune("Cerca via"),
+        appBar: this.widget.conappbar ?  appbarcomune("Cerca via")  : null,
         body:
 
         Column(
@@ -75,7 +82,7 @@ class CercaViaState extends State<CercaVia>{
                 autofocus: true,
                 onChanged: (val){Posizione.instance.cercasuHERE(val);},
                 decoration: InputDecoration(
-                  hintText: 'Ricerca mansione',
+                  hintText: 'Ricerca via',
                 ),
               ),
 

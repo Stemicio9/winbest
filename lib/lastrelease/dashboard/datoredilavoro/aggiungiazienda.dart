@@ -1,7 +1,6 @@
 
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/authentication/posizione.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
@@ -103,7 +102,7 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
     await Posizione.instance.aggiornaposizone();
 
     PosizioneLatLong posizioneazienda = await Navigator.of(context).push(
-    MaterialPageRoute(builder: (c) => CercaVia())
+    MaterialPageRoute(builder: (c) => CercaVia(conappbar: true))
     );
 
     setState(() {
