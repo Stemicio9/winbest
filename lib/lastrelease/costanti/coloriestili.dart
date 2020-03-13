@@ -80,6 +80,13 @@ const List<Color> signInGradients = [
   Color(0xFF03A0FE),
 ];
 
+const List<Color> calltoactiongradient = [
+    Color.fromRGBO(254, 167, 10, 1),
+     Color.fromRGBO(254, 167, 10, 1),
+    Color.fromRGBO(254, 167, 10, 1),
+    Color.fromRGBO(254, 167, 10, 1),
+];
+
 const List<Color> buttongradiant = [
   Color(0xFF03A0FE),
   Color(0xFF03A0FE),

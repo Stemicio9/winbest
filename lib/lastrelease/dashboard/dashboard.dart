@@ -91,7 +91,8 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
                 child: new MenuLaterale(),
               ),
               appBar: appbar(),
-              body: Container(),
+              body: bodydatore(),
+              bottomNavigationBar: bottomnavigationbardatore(),
             );
           }else if(snapshot.data.data["ruolo"] == "LAVORATORE"){
             return Scaffold(

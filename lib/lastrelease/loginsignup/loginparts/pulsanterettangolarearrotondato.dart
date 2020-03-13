@@ -36,6 +36,7 @@ class PulsanteRettangolareArrotondato extends StatelessWidget {
                       colors: gradient,
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight),
+
                 ),
                 child: Text(title,
                     style: TextStyle(

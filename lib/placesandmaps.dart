@@ -51,14 +51,12 @@ class CercaViaState extends State<CercaVia>{
 
   @override
   Widget build(BuildContext context) {
+    if(this.widget.conappbar) return ricerca();
+    return
+      Container(
+      child: colonna()
+      );
 
-
-
-    return Scaffold(
-    //    appBar: appbarcomune("Cerca via"),
-        body:
-        ricerca()
-    );
   }
 
 
@@ -70,61 +68,62 @@ class CercaViaState extends State<CercaVia>{
       Scaffold(
         appBar: this.widget.conappbar ?  appbarcomune("Cerca via")  : null,
         body:
-
-        Column(
-          children: <Widget>[
-
-
-            Container(
-              padding: EdgeInsets.all(10.0),
-
-              child: TextField(
-                autofocus: true,
-                onChanged: (val){Posizione.instance.cercasuHERE(val);},
-                decoration: InputDecoration(
-                  hintText: 'Ricerca via',
-                ),
-              ),
-
-            ),
-            Flexible(
-              child: StreamBuilder(
-                stream: Posizione.instance.locations.stream.asBroadcastStream(),
-                builder: (context, snapshot) {
-
-
-
-                  if (!snapshot.hasData)
-                    return Center(
-                      child: Text("Nessuna ricerca"),
-                    );
-
-                  return ListView.builder(
-                    itemCount: snapshot.data["items"].length,
-                    itemBuilder: (context, index) {
-                      final title = snapshot.data["items"][index]["title"];
-                      final street = snapshot.data["items"][index]["address"]["street"];
-                      final resultType = snapshot.data["items"][index]["resultType"];
-                      return GestureDetector(
-                          onTap: () {
-                            print(snapshot.data[index]);
-                            final latitudine = snapshot.data["items"][index]["position"]["lat"];
-                            final longitudine = snapshot.data["items"][index]["position"]["lng"];
-                            PosizioneLatLong result = PosizioneLatLong(latitudine: latitudine,longitudine: longitudine, via: street,titolo: title);
-                            Navigator.of(context).pop(result);
-                          },
-                          child:
-                         riga(title,street,resultType)
-                      );
-                    }
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-
+          colonna()
       );
+  }
+
+
+  Widget colonna(){
+    return  Column(
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.all(10.0),
+
+          child: TextField(
+            autofocus: true,
+            onChanged: (val){Posizione.instance.cercasuHERE(val);},
+            decoration: InputDecoration(
+              hintText: 'Ricerca via',
+            ),
+          ),
+
+        ),
+        Flexible(
+          child: StreamBuilder(
+            stream: Posizione.instance.locations.stream.asBroadcastStream(),
+            builder: (context, snapshot) {
+
+
+
+              if (!snapshot.hasData)
+                return Center(
+                  child: Text("Nessuna ricerca"),
+                );
+
+              return ListView.builder(
+                  itemCount: snapshot.data["items"].length,
+                  itemBuilder: (context, index) {
+                    final title = snapshot.data["items"][index]["title"];
+                    final street = snapshot.data["items"][index]["address"]["street"];
+                    final resultType = snapshot.data["items"][index]["resultType"];
+                    return GestureDetector(
+                        onTap: () {
+                          print(snapshot.data[index]);
+                          final latitudine = snapshot.data["items"][index]["position"]["lat"];
+                          final longitudine = snapshot.data["items"][index]["position"]["lng"];
+                          PosizioneLatLong result = PosizioneLatLong(latitudine: latitudine,longitudine: longitudine, via: street,titolo: title);
+                          Navigator.of(context).pop(result);
+                        },
+                        child:
+                        riga(title,street,resultType)
+                    );
+                  }
+              );
+            },
+          ),
+        ),
+      ],
+    );
   }
 
 

@@ -188,6 +188,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_stripe_payment:
+    dependency: "direct main"
+    description:
+      name: flutter_stripe_payment
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.11"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -305,13 +312,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.11.3+2"
-  mapbox_search:
-    dependency: "direct main"
-    description:
-      name: mapbox_search
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.7"
   matcher:
     dependency: transitive
     description:
@@ -492,6 +492,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  stripe_payment:
+    dependency: "direct main"
+    description:
+      name: stripe_payment
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.6"
   term_glyph:
     dependency: transitive
     description:

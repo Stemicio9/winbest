@@ -2,9 +2,12 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:win/lastrelease/authentication/abbonamento.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/datoredilavoro/aggiungiazienda.dart';
+import 'package:win/lastrelease/dashboard/datoredilavoro/gestioneabbonamento.dart';
 import 'package:win/lastrelease/dashboard/lavoratore/agguingiskill.dart';
 import 'package:win/lastrelease/dashboard/modificautente.dart';
 import 'package:win/lastrelease/model/azienda.dart';
@@ -43,6 +46,7 @@ class ProfiloState extends State<Profilo>{
 
 
   Widget profilodatore(){
+    Abbonamenti.instance.aggiornaabbonamento();
      return Container(
        child: ListView(
          children: <Widget>[
@@ -53,7 +57,10 @@ class ProfiloState extends State<Profilo>{
            // Spacer(),
            SizedBox(height: 18.0,),
            Divider(height: 8.0,),
-          // AbbonamentoSection(),
+           SizedBox(height: 8.0,),
+           Center(child: Text("Abbonamento" , style: testosemplice16,),),
+           SizedBox(height: 8.0,),
+           AbbonamentoSection(),
 
            BottomSection(),
          ],
@@ -266,7 +273,8 @@ class MiddleSectionDatoreState extends State<MiddleSectionDatore> {
                     scrollDirection: Axis.horizontal,
 
                     itemBuilder: (context, index) {
-                      Azienda a = snapshot.data.data["listaaziende"][index];
+
+                      Azienda a = Azienda.fromJson(snapshot.data.data["listaaziende"][index]);
                       return ItemCard(
                           Icons.local_activity,
                           a.nomeazienda,
@@ -580,71 +588,84 @@ class ImmagineProfiloWidget extends StatelessWidget {
 
 }
 
-/*
+
 
 class AbbonamentoSection extends StatelessWidget {
+
+
+
   @override
   Widget build(BuildContext context) {
     return
       Padding(
-          padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Text(
-                    convertidata(abbonamento.fineabbonamento),
-                    style: TextStyle(fontSize: 15.0),
-                  ),
-                  Text(
-                    'Scadenza',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  Text(
-                    abbonamento.annuncirimasti.toString(),
-                    style: TextStyle(fontSize: 15.0),
-                  ),
-                  Text(
-                    'Annunci',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ],
-              ),
+          padding: EdgeInsets.symmetric(horizontal: 27, vertical: 7),
+          //    padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child:
 
-              Center(
-                  child: MaterialButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
+          StreamBuilder(
+            stream: Abbonamenti.instance.abbonamento.stream.asBroadcastStream(),
+          builder: (context,snapshot) {
+
+            if(!snapshot.hasData) { return Container();}
+
+
+            print("DATA ABBONAMENTO = " + snapshot.data.data["fineabbonamento"]);
+            DateTime data = DateTime.parse(snapshot.data.data["fineabbonamento"]);
+            print(data);
+
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Text(
+                      convertidata(data),
+                      style: TextStyle(fontSize: 15.0),
                     ),
-                    color:Color(0xFF2FE000),
-                    elevation: 10,
-                    onPressed: ()async{
-/*
-                      await prodottiAbbonamentiService.prendiprodottiabbonamenti();
+                    Text(
+                      'Scadenza',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    Text(
+                      snapshot.data.data["annuncirimasti"].toString(),
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                    Text(
+                      'Annunci',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
 
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) =>
+                Center(
+                    child: ClipOval(
+                      child: Container(
+                          height: 40.0,
+                          width: 40.0,
+                          color: Color(0xFF2FE000).withOpacity(0.2),
+                          //                color: azzurroscuro.withOpacity(0.2),
+                          child: IconButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (c)=> PaginaGestioneAbbonamento()));
+                            },
+                            icon: Icon(Icons.edit),
+                            color: Color(0xFF2FE000),
+                            //                  color: azzurroscuro
+                          )),
+                    ),
+                )
 
-                          PaginaGestioneAbbonamento()
+              ],
+            );
+          }
 
-                      )); */
-                    },
-                    child: Text("Abbonamento" , style: TextStyle(
-                      fontFamily: 'Roboto',
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w200,
-                    ),),
-                  )
-              )
 
-            ],
           )
+
       );
   }
 
@@ -658,7 +679,7 @@ class AbbonamentoSection extends StatelessWidget {
 
 
 }
-*/
+
 
 
 

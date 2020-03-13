@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/authentication/posizione.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
-import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
+import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
 import 'package:win/lastrelease/model/azienda.dart';
 import 'package:win/lastrelease/model/posizionelatlong.dart';
 import 'package:win/lastrelease/widgets/appbar.dart';
@@ -31,7 +31,7 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
     return Scaffold(
       appBar: appbarcomune("Aggiungi Attività"),
       body:
-      Container(
+      SingleChildScrollView(
         child:
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,13 +44,27 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
               child:
               Padding(
                 padding: EdgeInsets.only(left: 25),
-                child:Text("NOME ATTIVITA'",style: TextStyle(fontSize: 16, color:  Color(0xFF535353), fontWeight: FontWeight.w700),),
+                child:Text("NOME ATTIVITA'",style: testosemplice16),
               ),
             ),
             Padding(
               padding: EdgeInsets.only(bottom: 5),
             ),
-            InputWidgetSingolo(30,0,"Es. Harrods",nomeaziendacontroller),
+
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0 , horizontal: 35),
+
+        child:
+
+             TextField(
+              controller: nomeaziendacontroller,
+              decoration: InputDecoration(
+               hintText: 'Google',
+                ),
+              ),
+
+      ),
+
 
             Padding(
               padding: EdgeInsets.only(bottom: 15),
@@ -61,7 +75,7 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
               child:
               Padding(
                 padding: EdgeInsets.only(left: 25),
-                child:Text("INDIRIZZO ATTIVITA'",style: TextStyle(fontSize: 16, color:  Color(0xFF535353), fontWeight: FontWeight.w700),),
+                child:Text("INDIRIZZO ATTIVITA'",style: testosemplice16),
               ),
             ),
             Hero(
@@ -72,7 +86,21 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
                   },
                   child:
                   AbsorbPointer(
-                    child: InputWidgetSingolo(0,30,"Es. Via Torino",indirizzoaziendacontroller),
+                    child:
+
+                    Container(
+                      padding:EdgeInsets.symmetric(vertical: 10.0 , horizontal: 35),
+
+                      child:
+                    TextField(
+                      controller: indirizzoaziendacontroller,
+                      decoration: InputDecoration(
+                        hintText: 'Via Torino, 20',
+                      ),
+                    ),
+                    )
+
+
                   )
               ),
               tag: "Aggiungi via",
@@ -105,6 +133,8 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
     MaterialPageRoute(builder: (c) => CercaVia(conappbar: true))
     );
 
+    if(posizioneazienda == null || posizioneazienda.via.isEmpty) return;
+
     setState(() {
       indirizzoaziendacontroller.text = posizioneazienda.via;
       azienda.posizionelatlong = posizioneazienda;
@@ -112,35 +142,19 @@ class AggiungiAziendaState extends State<AggiungiAzienda>{
   }
 
   Widget buildbuttonsubmit(){
-    return MaterialButton(
-
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0),
-        ),
-
-        elevation: 10,
-
-        color: Color(0xFF2FE000),
-        onPressed: pubblicaattivita,
-        child:
-
-        Padding(
-            padding: EdgeInsets.only(top: 15, bottom: 15, left: 5, right: 5),
-            child:
-            Text("Aggiungi Attività",
-              style:TextStyle(fontSize: 14, color:  Colors.white, fontWeight: FontWeight.w800) ,)
-        )
-
+    return GestureDetector(
+        onTap: pubblicaattivita,
+        child: PulsanteRettangolareArrotondato("Pubblica", buttongradiant, false)
     );
   }
 
   pubblicaattivita() async {
     if(nomeaziendacontroller.text.isEmpty){
-      mostraerrore(context, "Non hai inserito il nome dell'azienda", "");
+      mostraerrore(context, "Non hai inserito il nome dell'azienda", " ");
       return;
     }
-    if(azienda.nomelocation == null || azienda.nomelocation.isEmpty){
-      mostraerrore(context, "Non hai inserito la posizione dell'azienda", "");
+    if(azienda.posizionelatlong == null){
+      mostraerrore(context, "Non hai inserito la posizione dell'azienda", " ");
       return;
     }
     azienda.nomeazienda = nomeaziendacontroller.text;

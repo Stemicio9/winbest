@@ -56,8 +56,6 @@ class Auth {
   }
 
   modificaprofilo(utente)async{
-    print("IL JSON E'");
-    print(utente.toJson());
     String urlcompleto = baseurl+secondbaseurlsecure+"modifica/"+VALORE_DI_CONTROLLO+"?access_token="+token;
     final response = await dio.post(urlcompleto,data: utente.toJson());
     currentauth.sink.add(response);
