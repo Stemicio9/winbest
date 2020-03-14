@@ -1,12 +1,14 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe_payment/flutter_stripe_payment.dart';
+//import 'package:flutter_stripe_payment/flutter_stripe_payment.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:win/lastrelease/authentication/abbonamento.dart';
 
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
 import 'package:win/lastrelease/model/prodottoabbonamento.dart';
+import 'package:win/lastrelease/utils/acquisizionecartapage.dart';
+import 'package:win/lastrelease/utils/paymentcard.dart';
 import 'package:win/lastrelease/widgets/appbar.dart';
 import 'package:win/lastrelease/widgets/listametodidipagamentoradio.dart';
 import 'package:win/lastrelease/widgets/popupconferma.dart';
@@ -16,7 +18,7 @@ class PaginaCheckOut extends StatefulWidget {
 
   ProdottoAbbonamento prodottoAbbonamento;
 
-  String intent;
+  PaymentIntent intent;
 
 
 
@@ -107,7 +109,7 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
            ),
 
 
-            Flexible(child: Container(),),
+            Expanded(child: Container(),),
 
             contattaci(),
         ]
@@ -118,15 +120,20 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
 
 
   creametododipagamento() async{
-    var paymentResponse = await Abbonamenti.instance.flutterStripePayment.addPaymentMethod();
-    print("STATUS = ");
-    print(paymentResponse.status);
-    print("ERRORE = ");
-    print(paymentResponse.errorMessage);
-    if(paymentResponse.status == PaymentResponseStatus.succeeded)
+//    var paymentResponse = await Abbonamenti.instance.flutterStripePayment.addPaymentMethod();
+
+    PaymentCard carta = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => AcquisizioneCarta()));
+    if(carta == null) return;
+
+    CreditCard card = carta.toCreditCard();
+
+    PaymentMethodRequest request = new PaymentMethodRequest(card: card);
+
+    PaymentMethod method = await StripePayment.createPaymentMethod(request);
+    if(method != null)
     {
 
-      var res = await Abbonamenti.instance.salvametododipagamento(paymentResponse.paymentMethodId);
+      var res = await Abbonamenti.instance.salvametododipagamento(method.id);
       print(res);
       setState(() {
 
@@ -144,11 +151,17 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
   paga() async {
     var metodo = this.listametodiradio.metododipagamentoscelto.metodo;
 
-    var response = await Abbonamenti.instance.flutterStripePayment.confirmPaymentIntent( this.widget.intent,
-        metodo.id,
-        trasformadoubleinnumerocentesimi(this.widget.prodottoAbbonamento.prezzo));
+    this.widget.intent.paymentMethodId = metodo.id;
 
-    if(response.status == PaymentResponseStatus.succeeded){
+    PaymentIntentResult result = await StripePayment.confirmPaymentIntent(this.widget.intent);
+
+/*    var response = await Abbonamenti.instance.flutterStripePayment.confirmPaymentIntent( this.widget.intent,
+        metodo.id,
+        trasformadoubleinnumerocentesimi(this.widget.prodottoAbbonamento.prezzo)); */
+
+    print(result.status);
+
+    if(result.status == "succeeded"){
       bool result = await Abbonamenti.instance.confermapagamento(this.widget.prodottoAbbonamento.nome);
       if(result) {
         Navigator.of(context).pop();
@@ -166,6 +179,7 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
 
   Widget contattaci() {
     return Container(
+
       height: 50.0,
       color: color1.withOpacity(0.2),
       child: Padding(

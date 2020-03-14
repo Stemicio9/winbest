@@ -2,7 +2,7 @@
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe_payment/flutter_stripe_payment.dart';
+//import 'package:flutter_stripe_payment/flutter_stripe_payment.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:stripe_payment/stripe_payment.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
@@ -27,13 +27,15 @@ class Abbonamenti{
 
   BehaviorSubject<Response> metodidipagamento = BehaviorSubject<Response>();
 
-  FlutterStripePayment flutterStripePayment = FlutterStripePayment();
+//  FlutterStripePayment flutterStripePayment = FlutterStripePayment();
 
 
   Abbonamenti._privateConstructor(){
-    flutterStripePayment.setStripeSettings(
+/*    flutterStripePayment.setStripeSettings(
         publishablekey,
-    );
+    ); */
+    StripeOptions options = new StripeOptions(publishableKey: publishablekey);
+    StripePayment.setOptions(options);
   }
 
   static final Abbonamenti instance = Abbonamenti._privateConstructor();
@@ -73,10 +75,12 @@ class Abbonamenti{
   // PAGAMENTI CON STRIPE
 
 
-  Future<String> creaintentodipagamento(String nomeprodotto) async {
+  Future<PaymentIntent> creaintentodipagamento(String nomeprodotto) async {
     String urlbase = baseurl+secondbaseurlsecure+ "creaintentodipagamento/" + VALORE_DI_CONTROLLO+"?access_token="+Auth.instance.token;
     var response = await dio.post(urlbase, data: nomeprodotto);
-    return response.data;
+    print(response.data);
+    PaymentIntent intent = PaymentIntent(clientSecret: response.data);
+    return intent;//response.data;
   }
 
 
