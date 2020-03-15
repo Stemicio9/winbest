@@ -2,6 +2,7 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
+import 'package:win/lastrelease/widgets/customcircularprogressindicator.dart';
 
     Future<bool> popupconferma(String titolo, String domanda, context) async {
 
@@ -58,4 +59,26 @@ mostrasuccesso(context,titolo,messaggio,{durata = 3}){
     backgroundColor: Colors.red,
     boxShadows: [BoxShadow(color: Colors.blue[800], offset: Offset(0.0, 2.0), blurRadius: 3.0,)],
   )..show(context);
+}
+
+
+
+
+showwaitingdialog(context,String titolo){
+      var dialog = AlertDialog(
+         title: Text(titolo.isNotEmpty ? titolo : "", style: testosemplice14,),
+         backgroundColor: Colors.grey.withOpacity(0.01),
+         content: WinIndicator(),
+      );
+
+      return showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context){
+            return dialog;
+          });
+}
+
+chiudiwaitingdialog(context){
+      Navigator.of(context).pop();
 }

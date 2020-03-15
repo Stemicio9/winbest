@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
 import 'package:win/lastrelease/services/iscrizioni.dart';
 import 'package:win/lastrelease/widgets/appbar.dart';
+import 'package:win/lastrelease/widgets/popupconferma.dart';
 
 class PasswordDimenticata extends StatefulWidget {
 
@@ -27,7 +27,6 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
 
   String risposta;
 
-  ProgressDialog pr;
 
   @override
   void initState() {
@@ -41,19 +40,7 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
   Widget build(BuildContext context) {
 
 
-    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: true);
-    pr.style(
-        message: 'Ti stiamo inviando la nuova password',
-        borderRadius: 10.0,
-        backgroundColor: Colors.white,
-        progressWidget: CircularProgressIndicator(),
-        elevation: 10.0,
-        insetAnimCurve: Curves.easeInOut,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w700)
-    );
+
 
     return GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -159,22 +146,13 @@ class PasswordDimenticataState extends State<PasswordDimenticata>{
     setState(() {
       risposta = result;
     }); */
-     await mostraprogressdialog();
+     showwaitingdialog(context,"Stiamo generando una nuova password");
      String result = await passworddimenticata(mailcontroller.text);
-     await nascondiprogressdialog();
+     chiudiwaitingdialog(context);
      setState(() {
        risposta = result;
      });
   }
 
-
-  mostraprogressdialog()async {
-    await pr.show();
-  }
-
-
-  nascondiprogressdialog()async{
-    await pr.hide();
-  }
 
 }

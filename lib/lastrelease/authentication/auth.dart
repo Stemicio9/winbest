@@ -27,6 +27,23 @@ class Auth {
   static final Auth instance = Auth._privateConstructor();
 
 
+  Future autenticazionecorrente() async {
+    var response = await currentauth.first.wrapped;
+    return response.data;
+  }
+
+  Future<List<Azienda>> aziendecorrenti() async {
+    var response = await currentauth.first.wrapped;
+    List<dynamic> list = response.data["listaaziende"];
+    List<Azienda> result = list.map((item) => Azienda.fromJson(item)).toList();
+    return result;
+  }
+
+  Future<String> autenticazionecorrenteemail() async {
+    var response = await currentauth.first.wrapped;
+    return response.data["email"];
+  }
+
   Future<bool> entra(username, password) async {
     final authorizationEndpoint =
     Uri.parse(baseurl + "oauth/token");

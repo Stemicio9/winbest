@@ -149,6 +149,10 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
   }
 
   paga() async {
+
+
+    showwaitingdialog(context,"In attesa del pagamento...");
+
     var metodo = this.listametodiradio.metododipagamentoscelto.metodo;
 
     this.widget.intent.paymentMethodId = metodo.id;
@@ -159,6 +163,7 @@ class PaginaCheckOutState extends State<PaginaCheckOut>{
         metodo.id,
         trasformadoubleinnumerocentesimi(this.widget.prodottoAbbonamento.prezzo)); */
 
+    chiudiwaitingdialog(context);
     print(result.status);
 
     if(result.status == "succeeded"){

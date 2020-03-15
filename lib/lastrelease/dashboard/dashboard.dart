@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/dashboardwidgets/bottomnavy.dart';
+import 'package:win/lastrelease/dashboard/datoredilavoro/pubblicaannuncio.dart';
 import 'package:win/lastrelease/dashboard/profilologged.dart';
 import 'package:win/lastrelease/menulaterale/menulaterale.dart';
 
@@ -26,6 +27,8 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
   PageController _pageController;
 
   Profilo profilo = new Profilo();
+
+  PubblicaAnnuncio pubblicaAnnuncio = new PubblicaAnnuncio();
 
 
   @override
@@ -235,9 +238,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
           Container(
             child: Text("1"),
           ),
-          Container(
-            child: Text("2"),
-          ),
+          pubblicaAnnuncio,
           Container(
             child: Text("3"),
           ),

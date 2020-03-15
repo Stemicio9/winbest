@@ -5,13 +5,13 @@
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/background.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/inputwidgets.dart';
 import 'package:win/lastrelease/loginsignup/loginparts/pulsanterettangolarearrotondato.dart';
 import 'package:win/lastrelease/loginsignup/recuperapassword.dart';
+import 'package:win/lastrelease/widgets/popupconferma.dart';
 
 
 
@@ -29,23 +29,12 @@ class LoginState extends State<Login>{
   TextEditingController emailcontroller = new TextEditingController();
   TextEditingController passwordcontroller = new TextEditingController();
 
-  ProgressDialog pr;
+
 
   @override
   Widget build(BuildContext context) {
 
-    pr = new ProgressDialog(context,type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-    pr.style(
-        borderRadius: 100.0,
-        backgroundColor: azzurroscuro,
-        progressWidget: CircularProgressIndicator(),
-        elevation: 20.0,
-        insetAnimCurve: Curves.easeInOut,
-        progressTextStyle: TextStyle(
-            color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w700),
-        messageTextStyle: TextStyle(
-            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w700)
-    );
+
 
 
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -152,7 +141,7 @@ class LoginState extends State<Login>{
                     ),
 
                     GestureDetector(
-                      onTap: (){risultatologin(context);},
+                      onTap: (){risultatologin();},
                       child: Container(
                         padding: EdgeInsets.all(10),
                         decoration: ShapeDecoration(
@@ -241,20 +230,22 @@ class LoginState extends State<Login>{
   }
 
 
-  risultatologin(context)async{
-    await mostraprogressdialog();
+  risultatologin()async{
+     showwaitingdialog(context,"Benvenuto");
     bool result = false;
     try {
           result = await Auth.instance.entra(
           emailcontroller.text, passwordcontroller.text);
+
+
     }catch (e){
 
     }
+     chiudiwaitingdialog(context);
     if(!result){
-      await nascondiprogressdialog();
       mostraerrore(context);
     }else{
-      await nascondiprogressdialog();
+
       Auth.instance.aggiornaprofilo();
       Navigator.of(context).pushNamed("/dashboard");
     }
@@ -272,19 +263,9 @@ class LoginState extends State<Login>{
     )..show(context);
   }
 
-  mostraprogressdialog()async {
-    await pr.show();
-  }
-
-
-  nascondiprogressdialog()async{
-    await pr.hide();
-  }
-
 
   @override
   void dispose() {
-    pr.dismiss();
     super.dispose();
   }
 

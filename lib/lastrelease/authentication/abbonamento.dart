@@ -115,4 +115,13 @@ class Abbonamenti{
     return false;
   }
 
+  Future<bool> abbonamentoterminato() async {
+    var response = await abbonamento.first.wrapped;
+    DateTime fineabbonamento = DateTime.parse(response.data["fineabbonamento"]);
+    int annuncirimasti = response.data["annuncirimasti"];
+    if(annuncirimasti <= 0) return true;
+    if(fineabbonamento.isBefore(DateTime.now())) return true;
+    return false;
+  }
+
 }
