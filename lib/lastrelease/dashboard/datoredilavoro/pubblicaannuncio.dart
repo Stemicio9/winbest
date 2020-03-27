@@ -49,6 +49,7 @@ class PubblicaAnnuncioState extends State<PubblicaAnnuncio> {
 
   @override
   void initState() {
+    Abbonamenti.instance.aggiornaabbonamento();
     radio = new CustomRadio(oggettopagaselezionato);
     super.initState();
   }

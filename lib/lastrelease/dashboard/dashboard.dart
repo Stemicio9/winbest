@@ -6,8 +6,11 @@ import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/dashboardwidgets/bottomnavy.dart';
 import 'package:win/lastrelease/dashboard/datoredilavoro/pubblicaannuncio.dart';
+import 'package:win/lastrelease/dashboard/lavoratore/paginaesploraannunci.dart';
 import 'package:win/lastrelease/dashboard/profilologged.dart';
 import 'package:win/lastrelease/menulaterale/menulaterale.dart';
+
+import 'datoredilavoro/paginaannuncidatore.dart';
 
 class Dashboard extends StatefulWidget{
   @override
@@ -29,6 +32,10 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
   Profilo profilo = new Profilo();
 
   PubblicaAnnuncio pubblicaAnnuncio = new PubblicaAnnuncio();
+
+  PaginaAnnunciDatore paginaAnnunciDatore = new PaginaAnnunciDatore();
+
+  EsploraAnnunci esploraAnnunci = new EsploraAnnunci();
 
 
   @override
@@ -164,9 +171,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
           setState(() => _currentIndex = index);
         },
         children: <Widget>[
-          Container(
-            child: Text("1"),
-          ),
+          esploraAnnunci,
           Container(
             child: Text("2"),
           ),
@@ -235,9 +240,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
           setState(() => _currentIndex = index);
         },
         children: <Widget>[
-          Container(
-            child: Text("1"),
-          ),
+          paginaAnnunciDatore,
           pubblicaAnnuncio,
           Container(
             child: Text("3"),

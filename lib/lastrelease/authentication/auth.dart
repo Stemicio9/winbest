@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:oauth2/oauth2.dart' as oauth2;
 import 'package:rxdart/rxdart.dart';
+import 'package:win/lastrelease/authentication/abbonamento.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:http/http.dart' as http;
 import 'package:win/lastrelease/model/azienda.dart';
@@ -84,6 +85,13 @@ class Auth {
     currentauth.sink.add(response);
   }
 
+  Future getprofilo(email) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"profilo/"+email+"/"+VALORE_DI_CONTROLLO+"?access_token="+token;
+    final response = await dio.get(urlcompleto);
+ //   currentauth.sink.add(response);
+    return response.data;
+  }
+
   Future<String> ruolo() async {
     String urlcompleto = baseurl+secondbaseurlsecure+"ruolo/"+VALORE_DI_CONTROLLO+"?access_token="+token;
     final response = await http.get(urlcompleto);
@@ -111,9 +119,25 @@ class Auth {
   }
 
 
+  DecorationImage immagineprofiloaltruiasdecoration(String email){
+
+    return DecorationImage(
+        image: NetworkImage(
+            baseurl+secondbaseurlsecure+"immagineprofilo/"+email+"/"+VALORE_DI_CONTROLLO+"?access_token="+token),
+        fit: BoxFit.cover);
+
+  }
+
+  Widget immagineprofiloaltrui(String email){
+    return Image.network(
+        baseurl+secondbaseurlsecure+"immagineprofilo/"+email+"/"+VALORE_DI_CONTROLLO+"?access_token="+token);
+  }
+
+
   void logout(context){
     token = "";
     currentauth = new BehaviorSubject<Response>();
+    Abbonamenti.instance.logout();
     Navigator.pushNamedAndRemoveUntil(context, "/", (a){return true;});
   }
 
@@ -166,6 +190,8 @@ class Auth {
     }
     return "ERRORE";
   }
+
+
 
 
 }

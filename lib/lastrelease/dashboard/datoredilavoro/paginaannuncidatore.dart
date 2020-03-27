@@ -1,7 +1,13 @@
 
 
-/*
+
 import 'package:flutter/material.dart';
+import 'package:win/lastrelease/costanti/coloriestili.dart';
+import 'package:win/lastrelease/dashboard/datoredilavoro/paginaricercautenti.dart';
+import 'package:win/lastrelease/dashboard/datoredilavoro/utilities/cardwidget.dart';
+import 'package:win/lastrelease/model/annuncio.dart';
+import 'package:win/lastrelease/services/annunciservice.dart';
+import 'package:win/lastrelease/widgets/animatedfloatingactionbutton.dart';
 
 class PaginaAnnunciDatore extends StatefulWidget{
 
@@ -31,7 +37,7 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
   @override
   void initState() {
     super.initState();
-    annunciService.prendimieiannunciattividatore();
+    Annunci.instance.annunciattividatore();
     pageController = PageController(
         viewportFraction: 0.6
     );
@@ -68,7 +74,7 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
                   ),
 
                   StreamBuilder(
-                    stream: annunciService.mieiannuncistreamcontroller.stream.asBroadcastStream(),
+                    stream: Annunci.instance.annuncilatodatore.stream.asBroadcastStream(),
                     builder: (context, snapshot) {
 
                       if(snapshot == null){
@@ -108,7 +114,7 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
                   Container(
                     height: MediaQuery.of(context).size.height * 1.5/2.5,
                     child: StreamBuilder(
-                        stream: annunciService.mieiannuncistreamcontroller.stream.asBroadcastStream(),
+                        stream: Annunci.instance.annuncilatodatore.stream.asBroadcastStream(),
 
                         builder: (context, snapshot) {
 
@@ -175,20 +181,87 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
       print("DOVREI FARE IL FETCH DELLA PROSSIMA PAGINA !!!!");
       prendiannunci();
     } */
-    AnnuncioDatore annuncio = AnnuncioDatore.fromJson(dato.data[index]);
+    Annuncio annuncio = Annuncio.fromJson(dato.data[index]);
     return CardWidget(annuncio);
   }
 
 
-  prendiannunci()async{
-    print("PRENDO NUOVI ANNUNCI");
-    pagenumber++;
-    await annunciService.prendimieiannuncidatorepaged(pagenumber);
-  }
+
 
 
 
   Widget bottomnavigation(){
+
+
+    FloatingActionButton archivio = new FloatingActionButton.extended(
+      backgroundColor:Colors.redAccent,
+
+
+      elevation: selezionato == 1 ? 30 : 0,
+
+      focusElevation: 20,
+
+      heroTag: "1",
+      onPressed: () async {
+        await Annunci.instance.archivioannuncidatore();
+        setState(() {
+          selezionato = 1;
+        });
+      },
+      icon:Icon(
+        Icons.archive,
+        size: 16,
+
+      ),
+      label:  Text("Archivio" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
+    );
+
+
+
+    FloatingActionButton attivi = new FloatingActionButton.extended(
+      backgroundColor:Color(0xFF2FE000),
+
+      elevation: selezionato == 2 ? 30 : 0,
+
+      focusElevation: 20,
+
+      heroTag: "2",
+      onPressed: () async {
+        await Annunci.instance.annunciattividatore();
+        setState(() {
+          selezionato = 2;
+        });
+      },
+      icon:Icon(
+        Icons.check,
+        size: 16,
+
+      ),
+      label:  Text("Attivi" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
+    );
+
+
+    FloatingActionButton cerca = new FloatingActionButton.extended(
+      backgroundColor:calltoactionlogin,
+
+      elevation: selezionato == 3 ? 30 : 0,
+
+
+      focusElevation: 20,
+
+      heroTag: "3",
+      onPressed: (){
+
+        //      Navigator.of(context).push(new MaterialPageRoute(builder: (c) => PaginaConLaRicercaDegliUtenti()));
+        Navigator.of(context).push(new MaterialPageRoute(builder: (c) => PaginaRicercaUtenti()));
+      },
+      icon:Icon(
+        Icons.search,
+        size: 16,
+
+      ),
+      label:  Text("Cerca" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
+    );
 
 
     return
@@ -203,75 +276,15 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
 
             children: <Widget>[
 
-              new FloatingActionButton.extended(
-                backgroundColor:Colors.redAccent,
-
-
-                elevation: selezionato == 1 ? 30 : 0,
-
-                focusElevation: 20,
-
-                heroTag: "1",
-                onPressed: () async {
-                  await annunciService.prendiarchivioannunci();
-                  setState(() {
-                    selezionato = 1;
-                  });
-                },
-                icon:Icon(
-                  Icons.archive,
-                  size: 16,
-
-                ),
-                label:  Text("Archivio" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
-              ),
+              selezionato == 1 ? AnimatedFloatingActionButton(child: archivio, color1: azzurroscuro, color2: azzurroscuro): archivio,
 
               SizedBox(width: 15,),
 
-              new FloatingActionButton.extended(
-                backgroundColor:Color(0xFF2FE000),
-
-                elevation: selezionato == 2 ? 30 : 0,
-
-                focusElevation: 20,
-
-                heroTag: "2",
-                onPressed: () async {
-                  await annunciService.prendimieiannunciattividatore();
-                  setState(() {
-                    selezionato = 2;
-                  });
-                },
-                icon:Icon(
-                  Icons.check,
-                  size: 16,
-
-                ),
-                label:  Text("Attivi" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
-              ),
+              selezionato == 2 ? AnimatedFloatingActionButton(child: attivi, color1: azzurroscuro, color2: azzurroscuro): attivi,
 
               SizedBox(width: 15,),
 
-              new FloatingActionButton.extended(
-                backgroundColor:calltoactionlgin,
-
-                elevation: selezionato == 3 ? 30 : 0,
-
-                focusElevation: 20,
-
-                heroTag: "3",
-                onPressed: (){
-
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (c) => PaginaConLaRicercaDegliUtenti()));
-
-                },
-                icon:Icon(
-                  Icons.search,
-                  size: 16,
-
-                ),
-                label:  Text("Cerca" , style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold),),
-              ),
+              selezionato == 3 ? AnimatedFloatingActionButton(child: cerca, color1: azzurroscuro, color2: azzurroscuro): cerca,
 
 
 
@@ -282,4 +295,3 @@ class PaginaAnnunciDatoreState extends State<PaginaAnnunciDatore>{
 
 
 }
-*/

@@ -124,4 +124,10 @@ class Abbonamenti{
     return false;
   }
 
+  void logout(){
+     pacchetti = BehaviorSubject<Response>();
+     abbonamento = BehaviorSubject<Response>();
+     metodidipagamento = BehaviorSubject<Response>();
+  }
+
 }
