@@ -23,7 +23,7 @@ class PubblicaAnnuncio extends StatefulWidget {
 
 class PubblicaAnnuncioState extends State<PubblicaAnnuncio> {
 
-  Azienda aziendascelta = new Azienda();
+  Azienda aziendascelta;
 
   TextEditingController mansionecontroller = new TextEditingController();
   String urlmansione;
@@ -334,7 +334,7 @@ class PubblicaAnnuncioState extends State<PubblicaAnnuncio> {
           if(!snapshot.hasData) return Container();
           List<Azienda> listaaziende = snapshot.data;
           print(listaaziende);
-          if(listaaziende.length > 0) aziendascelta = listaaziende[0];
+          if(listaaziende.length > 0 && aziendascelta == null) aziendascelta = listaaziende[0];
           return
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
