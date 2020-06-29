@@ -56,7 +56,7 @@ class PaginaFiltriLavoratoreState extends State<PaginaFiltriLavoratore>{
   int valoreselezionato = 1;
 
   Future<bool> _onWillPop() async{
-    await Annunci.instance.prendiannunciqueriedandpaged(0);
+    await Annunci.instance.prendiannunciqueriedandpaged(false);
     return true;
   }
 

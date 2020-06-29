@@ -57,7 +57,7 @@ dependencies:
 
 #  flutter_map: ^0.7.3
 #  latlong: ^0.6.1
-#  firebase_messaging: ^6.0.7
+  firebase_messaging: ^6.0.7
 #
 #  flutter_xlider: ^3.0.1
 #  stripe_payment: ^1.0.6

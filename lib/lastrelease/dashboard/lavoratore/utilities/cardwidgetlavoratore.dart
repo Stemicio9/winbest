@@ -2,13 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:win/lastrelease/authentication/auth.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
-import 'package:win/lastrelease/dashboard/datoredilavoro/utilities/detailscreen.dart';
 import 'package:win/lastrelease/dashboard/datoredilavoro/utilities/iconatitolo.dart';
+import 'package:win/lastrelease/dashboard/lavoratore/utilities/detailscreenlavoratore.dart';
 import 'package:win/lastrelease/model/annuncio.dart';
 import 'package:win/lastrelease/services/skillservice.dart';
 
 class CardWidgetLavoratore extends StatelessWidget {
-
 
 
   Annuncio annuncio;
@@ -22,7 +21,7 @@ class CardWidgetLavoratore extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => DetailScreen(annuncio) )
+            MaterialPageRoute(builder: (context) => DetailScreenLavoratore(annuncio) )
         );
       },
     );
@@ -256,11 +255,22 @@ class CardWidgetLavoratore extends StatelessWidget {
                                   padding: EdgeInsets.only(bottom: 20),
                                   child: Center(
                                       child:
-                                      annuncio.candidati.length == 0 ? Text("Nessun candidato" , style: TextStyle(fontSize: 14, color:  Color(0xFF535353), fontWeight: FontWeight.w800),) : annuncio.candidati.length == 1 ?
-                                      Text(annuncio.candidati.length.toString() + " Candidato",
-                                        style:TextStyle(fontSize: 14, color:  Color(0xFF535353), fontWeight: FontWeight.w800) ,):
-                                      Text(annuncio.candidati.length.toString() + " Candidati",
-                                        style:TextStyle(fontSize: 14, color:  Color(0xFF535353), fontWeight: FontWeight.w800) ,)
+
+                                      FutureBuilder(
+                                        future: Auth.instance.currentauth.first.wrapped,
+                                        builder: (context,snapshot){
+                                          if(!snapshot.hasData) return Container();
+                                          return Text(
+                                              annuncio.candidati.contains(snapshot.data.data["email"]) ? "Sei già candidato" : annuncio.candidati.length.toString() + " candidati",
+                                             style: TextStyle(fontSize: 14, color:  Color(0xFF535353), fontWeight: FontWeight.w800),
+                                          );
+                                        },
+                                      )
+
+                                   /*   Text(annuncio.candidati.contains(element) == null || annuncio.scelto.isEmpty ? "Nessun candidato scelto" : "Candidato già scelto" ,
+                                        style: TextStyle(fontSize: 14, color:  Color(0xFF535353), fontWeight: FontWeight.w800),) */
+
+
 
                                   )
                               )

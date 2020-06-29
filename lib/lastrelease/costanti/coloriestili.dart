@@ -101,4 +101,8 @@ const List<Color> errorgradient = [
 
 final dateFormat = DateFormat("dd-MM-yyyy");
 
+final TextStyle scritteloginsottolineate =
+new TextStyle(fontFamily: fontfamily , fontSize: 16 , fontWeight: FontWeight.w400,
+    decoration: TextDecoration.underline);
+
  

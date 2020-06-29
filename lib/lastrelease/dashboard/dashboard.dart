@@ -7,8 +7,10 @@ import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/dashboardwidgets/bottomnavy.dart';
 import 'package:win/lastrelease/dashboard/datoredilavoro/pubblicaannuncio.dart';
 import 'package:win/lastrelease/dashboard/lavoratore/paginaesploraannunci.dart';
+import 'package:win/lastrelease/dashboard/lavoratore/paginaimieiannuncilavoratore.dart';
 import 'package:win/lastrelease/dashboard/profilologged.dart';
 import 'package:win/lastrelease/menulaterale/menulaterale.dart';
+import 'package:win/lastrelease/notifiche/dialogs/notifichedialogs.dart';
 
 import 'datoredilavoro/paginaannuncidatore.dart';
 
@@ -38,8 +40,12 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
   EsploraAnnunci esploraAnnunci = new EsploraAnnunci();
 
 
+  PaginaMieiAnnunciLavoratore paginamieiannuncilavoratore = new PaginaMieiAnnunciLavoratore();
+
+
   @override
   void initState() {
+    firebaseCloudMessaging_Listeners(context);
     _pageController = PageController(initialPage: _currentIndex,keepPage: false);
     super.initState();
   }
@@ -172,9 +178,7 @@ class DashboardState extends State<Dashboard> with SingleTickerProviderStateMixi
         },
         children: <Widget>[
           esploraAnnunci,
-          Container(
-            child: Text("2"),
-          ),
+          paginamieiannuncilavoratore,
           Container(
             child: Text("3"),
           ),

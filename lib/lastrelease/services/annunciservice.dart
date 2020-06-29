@@ -68,11 +68,17 @@ class Annunci {
     return response;
   }
 
+  int pagenumber = 1;
 
   prendiannunciqueriedandpaged(page) async {
+
+    if(page){
+      pagenumber++;
+    }
+
     // cercaannuncilatolavoratorequeried
     String pagina = "0";
-    int numeroelementi = page*5;
+    int numeroelementi = pagenumber*5;
 
     if(filtro.posizionepartenza == null){
       var location = await Posizione.instance.aggiornaposizone();
@@ -91,6 +97,20 @@ class Annunci {
   Future candidati(String hex) async {
     String urlcompleto = baseurl+secondbaseurlsecure+"candidati/"+hex+"/"+VALORE_DI_CONTROLLO+"?access_token="+Auth.instance.token;
     var response = await dio.get(urlcompleto);
+    return response;
   }
+
+  Future toglicandidatura(String hex) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"toglicandidatura/"+hex+"/"+VALORE_DI_CONTROLLO+"?access_token="+Auth.instance.token;
+    var response = await dio.get(urlcompleto);
+    return response;
+  }
+
+  Future annunciodaid(String hex) async {
+    String urlcompleto = baseurl+secondbaseurlsecure+"daid/"+hex+"/"+VALORE_DI_CONTROLLO+"?access_token="+Auth.instance.token;
+    var response = await dio.get(urlcompleto);
+    return response;
+  }
+
 
 }

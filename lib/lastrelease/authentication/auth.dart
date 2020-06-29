@@ -18,6 +18,7 @@ class Auth {
 
   var token;
   var HERE_token;
+  var token_firebase;
 
 
 
@@ -192,6 +193,13 @@ class Auth {
   }
 
 
+  Future<void> aggiornatokenfirebase(String token) async {
+    String urlcompleto = baseurl + secondbaseurl + "salvatokenfirebase/" + VALORE_DI_CONTROLLO +"?access_token="+token;
+    var response = await dio.post(urlcompleto, data: token);
+    if(response.data){
+     token_firebase = token;
+    }
+  }
 
 
 }

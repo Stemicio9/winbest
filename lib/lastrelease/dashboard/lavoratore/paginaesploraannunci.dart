@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:win/lastrelease/authentication/posizione.dart';
 import 'package:win/lastrelease/costanti/coloriestili.dart';
 import 'package:win/lastrelease/dashboard/lavoratore/utilities/cardwidgetlavoratore.dart';
 import 'package:win/lastrelease/dashboard/lavoratore/utilities/filtraricerca.dart';
@@ -22,7 +21,7 @@ class EsploraAnnunciState extends State<EsploraAnnunci>{
   int numeropagina = 1;
 
 
-  int pagenumber = 1;
+
 
   PageController pageController;
 
@@ -37,7 +36,7 @@ class EsploraAnnunciState extends State<EsploraAnnunci>{
 
     //  timer = Timer.periodic(Duration(seconds: 60), (Timer t) => refresh());
     // annunciService.prendimieiannuncidatore();
-    Annunci.instance.prendiannunciqueriedandpaged(pagenumber);
+    Annunci.instance.prendiannunciqueriedandpaged(false);
 
 
     pageController = PageController(
@@ -49,16 +48,18 @@ class EsploraAnnunciState extends State<EsploraAnnunci>{
       if (this.pageController.position.pixels >= this.pageController.position.maxScrollExtent) {
         // Andrebbe implementata la logica per l'impaginazione
         //  this.prendiannunci();
-        pagenumber++;
-        Annunci.instance.prendiannunciqueriedandpaged(pagenumber);
+
+        Annunci.instance.prendiannunciqueriedandpaged(true);
 
       }
     });
   }
 
 
+
+
   settastato() async {
-    Annunci.instance.prendiannunciqueriedandpaged(pagenumber);
+    Annunci.instance.prendiannunciqueriedandpaged(false);
     setState(() {
 
     });
@@ -160,7 +161,7 @@ class EsploraAnnunciState extends State<EsploraAnnunci>{
 
 
   prendiannunci()async{
-      await  Annunci.instance.prendiannunciqueriedandpaged(pagenumber);
+      await  Annunci.instance.prendiannunciqueriedandpaged(false);
   }
 
 
