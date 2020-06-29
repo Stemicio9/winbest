@@ -334,7 +334,28 @@ class PubblicaAnnuncioState extends State<PubblicaAnnuncio> {
           if(!snapshot.hasData) return Container();
           List<Azienda> listaaziende = snapshot.data;
           print(listaaziende);
-          if(listaaziende.length > 0 && aziendascelta == null) aziendascelta = listaaziende[0];
+          if(listaaziende.length > 0 && aziendascelta == null) {
+            aziendascelta = listaaziende[0];
+          }
+
+          Iterable<DropdownMenuItem<Azienda>> iterabile = listaaziende.map<DropdownMenuItem<Azienda>>((Azienda value) {
+
+            return DropdownMenuItem<Azienda>(
+              value: value,
+              child: Text(value.nomeazienda),
+            );
+          });
+
+          List<DropdownMenuItem<Azienda>> listaitem = iterabile.toList();
+          if(aziendascelta != null) {
+            for (DropdownMenuItem<Azienda> curr in listaitem) {
+              if (curr.value == aziendascelta) {
+                aziendascelta = curr.value;
+              }
+            }
+          }
+
+
           return
             Container(
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
@@ -358,13 +379,7 @@ class PubblicaAnnuncioState extends State<PubblicaAnnuncio> {
                                         child:
                                         DropdownButton<Azienda>(
                                             items:
-                                            listaaziende.map<DropdownMenuItem<Azienda>>((Azienda value) {
-
-                                              return DropdownMenuItem<Azienda>(
-                                                value: value,
-                                                child: Text(value.nomeazienda),
-                                              );
-                                            }).toList(),
+                                            listaitem,
 
                                             style: TextStyle(fontSize: 16, color: Color(0xFF999A9A), fontWeight: FontWeight.w700),
 

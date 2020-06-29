@@ -36,9 +36,14 @@ class Auth {
 
   Future<List<Azienda>> aziendecorrenti() async {
     var response = await currentauth.first.wrapped;
+
     List<dynamic> list = response.data["listaaziende"];
     List<Azienda> result = list.map((item) => Azienda.fromJson(item)).toList();
     return result;
+  }
+
+   dynamic aziendecorrenticomestream() {
+    return currentauth.first.asStream().asBroadcastStream();
   }
 
   Future<String> autenticazionecorrenteemail() async {

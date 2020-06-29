@@ -18,4 +18,10 @@ class Azienda {
 
   Map<String, dynamic> toJson() => _$AziendaToJson(this);
 
+
+  @override
+  bool operator ==(other) {
+    return nomeazienda == other.nomeazienda;
+  }
+
 }
